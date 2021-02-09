@@ -1,0 +1,18 @@
+---
+- hosts: Servers
+  tasks:
+
+  - name: Updating Bashrc
+    shell: source ~/.bashrc
+
+  - name: Installing Node
+    command: bash -c '. ~/.nvm/nvm.sh; nvm install 8'
+
+  - name: List node version
+    shell: 'echo `node -v` > version.txt'
+
+  - name: Bringing file 
+    fetch:
+        src: /home/ec2-user/version.txt
+        dest: /home/ec2-user/
+        flat: yes

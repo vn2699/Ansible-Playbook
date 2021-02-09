@@ -1,0 +1,38 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install apache2 package
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php  
+      state: present
+      update_cache: yes
+    when: absible_distriibution == "Ubuntu"
+
+  - name: Start the apache2 service
+    systemd:
+      name: apached
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 package
+    yum:
+      name: 
+        - httpd
+        - php  
+      state: present
+      update_cache: yes
+    when: absible_distribution == "CentOS"
+
+  - name: Start the apache2 service
+    systemd:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+

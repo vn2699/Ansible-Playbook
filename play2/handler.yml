@@ -1,0 +1,24 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  vars:
+    - httpd_log_level: error
+  tasks:
+
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: latest
+
+    - name: update configuration
+      template:
+        src: /home/{{ user }}/httpd.conf.j2
+        dest: /etc/httpd/conf/httpd.conf
+      notify: httpd service
+  handlers:
+    - name: httpd service
+      service: 
+        name: httpd
+        state: restarted
+      listen: httpd service

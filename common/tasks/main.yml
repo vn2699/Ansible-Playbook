@@ -1,0 +1,13 @@
+---
+# tasks file for /home/varun/Documents/aws_security/ansible/common
+
+- name: install httpd 
+  yum:
+    name: httpd
+    state: latest
+
+- name: deploy httpd.conf template
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify: httpd service

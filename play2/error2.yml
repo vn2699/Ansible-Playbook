@@ -1,0 +1,21 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  become: yes
+  vars:
+    target_service: httpd
+  tasks:
+
+    - name: Install Software
+      block:
+        - service:
+            name: "{{ target_service }}"
+            state: started
+            register: service_status
+      rescue:
+        - debug:
+            var: service_status
+      always:
+        - debug:
+            msg: "TRied to ensure service was running"

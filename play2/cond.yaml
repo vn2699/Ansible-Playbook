@@ -1,0 +1,24 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  vars:
+    target_file: "/home/{{ user}}/hostname"
+  tasks:
+
+    - name: Gather file information
+      stat:
+        path: "{{ target_file }}"
+      register: hostname
+
+    - name: Rename hostname when found
+      command: mv "{{ target_file }}" "/home/{{ user }}/net-info"
+      when: hostname.stat.exists == ""
+      # or
+      # when: hostname['stat']['exists']
+      # when: not hostname.stat.exists
+      # when: hostname.stat.exists is defined
+      # when: hostname.stat.exists >=
+      # when: hostname.stat.exists <=
+      # when: hostname.stat.exists == "" and hostname.stat.exists.hks == ""
+      # when: hostname.stat.exists == "" or hostname.stat.exists.sjkg == ""

@@ -1,0 +1,15 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  become: yes
+  gather_facts: no
+  vars:
+    code_name: whisky
+    version: 4.2
+  tasks:
+
+    - name: deployy config file
+      template:
+        src: config.j2
+        dest: /opt/config

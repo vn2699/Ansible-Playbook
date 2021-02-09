@@ -1,0 +1,18 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  become: yes
+  tasks:
+
+    - name:
+      yum:
+        name: broke
+        state: latest
+      ignore_errors: yes
+
+    - name: Run utility
+      command: "/home/{{ user }}/do-stuff.sh what"
+      register: cmd_output
+      change_when: "'CHANGED' in cmd_output.stdout"
+      failed_when: "'FAILED' in cmd_output.stdout"

@@ -1,0 +1,7 @@
+ansible-vault decrypt vault
+ansible-vault encrypt vault
+ansible-vault encrypt --vault-id mysecret@prompt vault
+ansible-playbook secret.yml -i inv --vault-id mysecret@prompt
+ansible-vault edit vault
+ansible-vault view vault
+ansible-vault encrypt_string --vault-id prod@prompt 'new_var: new-value'

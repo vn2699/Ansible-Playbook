@@ -1,0 +1,28 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Update repository
+    apt:
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: present
+    when: absible_distriibution == "Ubuntu"
+
+  - name: Add php support for apache
+    apt:
+      name: libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Start the apache2 service
+    service:
+      name: apached
+      state: start
+

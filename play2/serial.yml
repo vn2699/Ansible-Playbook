@@ -1,0 +1,12 @@
+---
+
+- hosts: Centos
+  serial: 1
+  become: yes
+  user: "{{ user }}"
+  tasks:
+
+    - name: install elinks
+      package:
+        name: elinks
+        state: present

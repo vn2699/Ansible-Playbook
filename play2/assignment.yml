@@ -1,0 +1,50 @@
+---
+
+- hosts: nfs
+  vars:
+    share_path: /mnt/nfsroot
+  become: yes
+  tasks:
+
+    - name: Ensure nfs-utils installed
+      package:
+        name: nfs-utils
+        state: present
+    - name: start nfs
+      service:
+        name: nfs-server
+        state: started
+        enabled: yes
+    - name: configure exports
+      template:
+        src: /home/ansible/exports.j2
+        dest: /etc/exports
+      notify: update nfs
+  handlers:
+    - name: update nfs export
+      command: exportfs -a
+      listen: update nfs
+
+- hosts: nfs
+  become: yes
+  vars:
+    nfs_ip: "{{ hostvars['nfs']['ansible_default_ipv4']['address'] }}"
+    nfs_hostname: "{{ hostvars['nfs']['ansible_hostname'] }}"
+  vars_files:
+    - /home/ansible/user-list.txt
+  tasks:
+
+    - name: configure /etc/hosts
+      template:
+        src: /home/ansible/etc.hosts.j2
+        dest: /etc/hosts
+    - name: get file status
+      stat:
+        path: /opt/user-agreement.txt
+      register: filestat
+    - name: create users
+      user:
+        name: "{{ item }}"
+        state: present
+      when: filestat.stat.exists 
+      loop: "{{ users }}"

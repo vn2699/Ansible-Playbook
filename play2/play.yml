@@ -1,0 +1,22 @@
+---
+
+- hosts: Ubuntu
+  become: yes
+  user: "{{ user }}"
+  tasks:
+
+    - name: update repos
+      tags: always
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: install sql
+      apt:
+        name: mysql-server
+        state: present

@@ -1,0 +1,11 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  tasks:
+
+    - name: Run Sleep.sh
+      command: "/home/{{ user }}/sleep.sh"
+      async: 60
+      poll: 10
+

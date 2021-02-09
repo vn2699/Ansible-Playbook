@@ -1,0 +1,75 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (CentOS)
+    tags: always
+    yum:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: install updates (Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: web_servers
+  become: true
+  tasks:
+
+  - name: install apache2 package
+    tags: apache,apache2,ubuntu
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php  
+      state: present
+    when: absible_distriibution == "Ubuntu"
+
+  - name: Start the apache2 service
+    tags: service,ubuntu,apache2
+    systemd:
+      name: apache2
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install apache2 package
+    tags: apache,centos,httpd
+    yum:
+      name: 
+        - httpd
+        - php  
+      state: present
+    when: absible_distribution == "CentOS"
+
+  - name: Start the apache2 service
+    tags: centos,httpd,service
+    systemd:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: Dbservers
+  become: true
+  tasks:
+  
+  - name: Install mysql on Ubuntu
+    tags: ubuntu,mysql,mysql-server
+    apt:
+      name: mysql-server
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install mysql on CentOS
+    tags: centos,mysql,mariadb
+    yum:
+      name: mariadb
+      state: present
+    when: ansible_distribution == "CentOS"

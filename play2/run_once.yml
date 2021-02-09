@@ -1,0 +1,16 @@
+---
+
+- hosts: Centos
+  user: "{{ user }}"
+  tasks:
+
+    - name: Run sleep.sh
+      command: "/home/{{ user}}/sleep.sh"
+      async: 60
+      poll: 0
+      run_once: yes
+    - name: install mariadb
+      package:
+        name: mariadb
+        state: latest
+      become: yes

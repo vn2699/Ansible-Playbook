@@ -1,0 +1,40 @@
+users:
+  - ubuntu
+  - ec2-user
+# List syntax
+
+user:
+  name: bob
+  job: engineer
+  salary: 16000
+
+# Dictionary syntax
+
+include_newlines: |
+  type some text
+  even more text
+  the last of the text
+
+#Adding new lines syntax
+
+
+fold_newlines: >
+  type some text
+  more text
+  last of the text
+
+# converting all of them into a single line
+
+[] {} : > | 
+# special_char
+
+"{{ var_name }}"
+# variable syntax
+
+become: yes
+# boolean yes or no
+
+version: "1.0"
+# floating points
+
+
